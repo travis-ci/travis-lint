@@ -1,0 +1,16 @@
+rvm:
+  - 1.9.3
+  - jruby-19mode
+  - rbx-19mode
+gemfile:
+  - Gemfile
+  - gemfiles/eventmachine-pre
+notifications:
+  recipients:
+    - recepient@example.com
+branches:
+  only:
+    - master
+    - 0.9.x-stable
+    - 0.8.x-stable
+    - 0.7.x-stable

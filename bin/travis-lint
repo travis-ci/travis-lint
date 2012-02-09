@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'travis/lint'
+
+  runner = Travis::Lint::Runner.new(ARGV)
+  runner.run
+rescue LoadError => e
+  $stderr.puts <<-EOS
+#{'*'*50}
+  Could not find 'travis/lint'
+
+  This may happen if you're using rubygems as your package manager, but it is not
+  being required through some mechanism before executing the travis-lint command.
+
+  You may need to do one of the following in your shell:
+
+    # for bash/zsh
+    export RUBYOPT=rubygems
+
+    # for csh, etc.
+    set RUBYOPT=rubygems
+
+  For background, please see http://gist.github.com/54177.
+#{'*'*50}
+  EOS
+
+  raise e
+
+  exit(1)
+end
