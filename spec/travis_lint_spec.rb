@@ -94,5 +94,16 @@ describe "A .travis.yml" do
         Travis::Lint::Linter.validate(travis_yml).should include(rbx200pre_is_no_longer_provided)
       end
     end
+
+
+    context "that specifies Ruby as the language but tries to set node_js version" do
+      let(:travis_yml) do
+        { :language => "ruby", :rvm => ["1.9.3"], :node_js => ["0.6"] }
+      end
+
+      it "is invalid" do
+        Travis::Lint::Linter.validate(travis_yml).should include({ :key => :language, :issue => "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." })
+      end
+    end
   end
 end

@@ -77,6 +77,12 @@ module Travis
       validator_for :ruby, :rvm, "Ruby 1.8.6 is no longer maintained and is no longer provided on travis-ci.org. Please move to 1.8.7." do |hsh|
         hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("1.8.6")
       end
+
+
+
+      validator_for :ruby, :language, "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." do |hsh|
+        hsh[:language].to_s.downcase == "ruby" && hsh[:node_js].present?
+      end
     end
   end
 end
