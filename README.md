@@ -7,11 +7,12 @@
 
 ## Installation
 
-TBD: we need to do initial gem release first
+    gem install travis-lint
 
 
 ## Usage
 
+    travis-lint # inside a dir with .travis.yml
     travis-lint ./.travis.yml
     travis-lint ~/your/project/.travis.yml
 
