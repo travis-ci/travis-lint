@@ -10,7 +10,13 @@ module Travis
 
     class Runner
       def initialize(argv)
-        show_help if argv.empty?
+        if argv.empty?
+          if File.exists?(".travis.yml")
+            argv = [".travis.yml"]
+          else
+            show_help
+          end
+        end
 
         @travis_file_path = Pathname.new(argv.first).expand_path
       end
@@ -21,7 +27,7 @@ module Travis
         check_that_travis_yml_file_is_valid_yaml!
 
         if (issues = Linter.validate(self.parsed_travis_yml)).empty?
-          puts "Hooray, your .travis.yml seems to be solid!"
+          puts "Hooray, .travis.yml at #{@travis_file_path} seems to be solid!"
         else
           issues.each do |i|
             puts "Found an issue with the `#{i[:key]}:` key:\n\n\t#{i[:issue]}"
