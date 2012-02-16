@@ -16,11 +16,5 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency("activesupport", ["~> 3.2.0"])
-  # activesupport 3.1 and 3.2 have a bug in HashWithIndifferentAccess that
-  # causes an undefined method exception when hash values are arrays, so we
-  # retreat to Hashr. MK.
-  s.add_runtime_dependency("hashr", [">= 0.0.19"])
-
   s.add_development_dependency("rspec", ["~> 2.8.0"])
 end

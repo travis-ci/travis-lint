@@ -29,7 +29,7 @@ describe "A .travis.yml" do
   def content_of_sample_file(name)
     path = Pathname.new(File.join("spec", "files", name)).expand_path
 
-    Hashr.new(YAML.load_file(path.to_s))
+    YAML.load_file(path.to_s)
   end
 
 

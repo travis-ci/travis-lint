@@ -1,4 +1,3 @@
-require "active_support/core_ext/object/blank"
 require "travis/lint/dsl"
 
 module Travis
@@ -33,7 +32,7 @@ module Travis
       #
 
       validator_for :all, :language, "Language: key is mandatory" do |hsh|
-        hsh[:language].blank?
+        blank? hsh[:language]
       end
 
 
@@ -42,7 +41,7 @@ module Travis
       #
 
       validator_for :erlang, :otp_release, "Specify OTP releases you want to test against using the :otp_release key" do |hsh|
-        hsh[:language].to_s.downcase == "erlang" && hsh[:otp_release].blank?
+        hsh[:language].to_s.downcase == "erlang" && blank?(hsh[:otp_release])
       end
 
 
@@ -51,7 +50,7 @@ module Travis
       #
 
       validator_for :ruby, :rvm, "Specify Ruby versions/implementations you want to test against using the :rvm key" do |hsh|
-        hsh[:language].to_s.downcase == "ruby" && hsh[:rvm].blank?
+        hsh[:language].to_s.downcase == "ruby" && blank?(hsh[:rvm])
       end
 
       validator_for :ruby, :rvm, "Prefer jruby-18mode RVM alias to jruby" do |hsh|
@@ -81,7 +80,7 @@ module Travis
 
 
       validator_for :ruby, :language, "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." do |hsh|
-        hsh[:language].to_s.downcase == "ruby" && hsh[:node_js].present?
+        hsh[:language].to_s.downcase == "ruby" && ! blank?(hsh[:node_js])
       end
     end
   end

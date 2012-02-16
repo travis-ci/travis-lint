@@ -1,8 +1,6 @@
 require "pathname"
 require "yaml"
 
-require "hashr"
-
 require "travis/lint/linter"
 
 module Travis
@@ -55,7 +53,7 @@ module Travis
       end
 
       def parsed_travis_yml
-        Hashr.new(YAML.load_file(@travis_file_path))
+        YAML.load_file(@travis_file_path)
       end
 
       def show_help
