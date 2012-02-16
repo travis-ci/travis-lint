@@ -1,6 +1,8 @@
-.DS_Store
 #~
-*~
-Gemfile.lock
 *.gem
-.rvmrc
+*.swp
+*~
+.DS_Store
+/.rvmrc
+/Gemfile.lock
+/TAGS

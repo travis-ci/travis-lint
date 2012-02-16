@@ -1,5 +1,6 @@
-require "active_support/core_ext/object/blank"
 require "travis/lint/dsl"
+
+require "hashr"
 
 module Travis
   module Lint
@@ -17,6 +18,8 @@ module Travis
       #
 
       def self.validate(hsh)
+        hsh = Hashr.new hsh
+
         issues = find_validators_for(hsh[:language]).inject([]) do |acc, val|
           acc << val.call(hsh)
           acc
@@ -32,8 +35,8 @@ module Travis
       # General
       #
 
-      validator_for :all, :language, "Language: key is mandatory" do |hsh|
-        hsh[:language].blank?
+      validator_for :all, :language, "The \"language\" key is mandatory" do |hsh|
+        blank? hsh[:language]
       end
 
 
@@ -41,8 +44,8 @@ module Travis
       # Erlang
       #
 
-      validator_for :erlang, :otp_release, "Specify OTP releases you want to test against using the :otp_release key" do |hsh|
-        hsh[:language].to_s.downcase == "erlang" && hsh[:otp_release].blank?
+      validator_for :erlang, :otp_release, "Specify OTP releases you want to test against using the \"otp_release\" key" do |hsh|
+        hsh[:language].to_s.downcase == "erlang" && blank?(hsh[:otp_release])
       end
 
 
@@ -50,8 +53,8 @@ module Travis
       # Ruby
       #
 
-      validator_for :ruby, :rvm, "Specify Ruby versions/implementations you want to test against using the :rvm key" do |hsh|
-        hsh[:language].to_s.downcase == "ruby" && hsh[:rvm].blank?
+      validator_for :ruby, :rvm, "Specify Ruby versions/implementations you want to test against using the \"rvm\" key" do |hsh|
+        hsh[:language].to_s.downcase == "ruby" && blank?(hsh[:rvm])
       end
 
       validator_for :ruby, :rvm, "Prefer jruby-18mode RVM alias to jruby" do |hsh|
@@ -81,7 +84,7 @@ module Travis
 
 
       validator_for :ruby, :language, "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." do |hsh|
-        hsh[:language].to_s.downcase == "ruby" && hsh[:node_js].present?
+        hsh[:language].to_s.downcase == "ruby" && ! blank?(hsh[:node_js])
       end
     end
   end

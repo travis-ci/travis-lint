@@ -2,11 +2,11 @@ require "spec_helper"
 
 describe "A .travis.yml" do
   let(:language_key_is_mandatory) do
-    { :key => :language, :issue => "Language: key is mandatory" }
+    { :key => :language, :issue => "The \"language\" key is mandatory" }
   end
 
   let(:rvm_key_is_recommended) do
-    { :key => :rvm, :issue => "Specify Ruby versions/implementations you want to test against using the :rvm key" }
+    { :key => :rvm, :issue => "Specify Ruby versions/implementations you want to test against using the \"rvm\" key" }
   end
 
   let(:prefer_jruby18mode_over_jruby) do
@@ -25,13 +25,16 @@ describe "A .travis.yml" do
     { :key => :rvm, :issue => "rbx-2.0.0pre RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
   end
 
+  let(:otp_release_key_is_required) do
+    { :key => :otp_release, :issue => "Specify OTP releases you want to test against using the \"otp_release\" key" }
+  end
+
 
   def content_of_sample_file(name)
     path = Pathname.new(File.join("spec", "files", name)).expand_path
 
-    Hashr.new(YAML.load_file(path.to_s))
+    YAML.load_file(path.to_s)
   end
-
 
   context "that is blank" do
     it "is invalid" do
@@ -41,8 +44,14 @@ describe "A .travis.yml" do
     end
   end
 
+  context "using String keys" do
+    it "is validates as with Symbol keys" do
+      Travis::Lint::Linter.validate({ "language" => "ruby" }).should include(rvm_key_is_recommended)
+    end
+  end
+
   context "that has language set to Ruby" do
-    context "but has no :rvm key" do
+    context "but has no \"rvm\" key" do
       it "is invalid" do
         Travis::Lint::Linter.validate({ :language => "ruby" }).should include(rvm_key_is_recommended)
         Travis::Lint::Linter.valid?(content_of_sample_file("no_rvm_key.yml")).should be_false
@@ -103,6 +112,15 @@ describe "A .travis.yml" do
 
       it "is invalid" do
         Travis::Lint::Linter.validate(travis_yml).should include({ :key => :language, :issue => "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." })
+      end
+    end
+  end
+
+  context "that has language set to erlang" do
+    context "but has no \"otp_release\" key" do
+      it "is invalid" do
+        Travis::Lint::Linter.validate({ :language => "erlang" }).should include(otp_release_key_is_required)
+        Travis::Lint::Linter.valid?({ :language => "erlang" }).should be_false
       end
     end
   end
