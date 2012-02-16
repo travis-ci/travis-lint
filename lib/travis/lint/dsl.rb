@@ -3,6 +3,12 @@ require "travis/lint/validator"
 module Travis
   module Lint
     module DSL
+      def blank? object
+        # This implementation is based on rails' activesupport.  It is used
+        # under the MIT license.
+        object.respond_to?(:empty?) ? object.empty? : !object
+      end
+
       @@validators = []
 
       def validator_for(language, key, message, &validator)
