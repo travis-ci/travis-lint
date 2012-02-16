@@ -2,27 +2,27 @@ require "spec_helper"
 
 describe "A .travis.yml" do
   let(:language_key_is_mandatory) do
-    { :key => :language, :issue => "Language: key is mandatory" }
+    { :key => "language", :issue => "Language: key is mandatory" }
   end
 
   let(:rvm_key_is_recommended) do
-    { :key => :rvm, :issue => "Specify Ruby versions/implementations you want to test against using the :rvm key" }
+    { :key => "rvm", :issue => "Specify Ruby versions/implementations you want to test against using the \"rvm\" key" }
   end
 
   let(:prefer_jruby18mode_over_jruby) do
-    { :key => :rvm, :issue => "Prefer jruby-18mode RVM alias to jruby" }
+    { :key => "rvm", :issue => "Prefer jruby-18mode RVM alias to jruby" }
   end
 
   let(:prefer_rbx18mode_over_rbx) do
-    { :key => :rvm, :issue => "Prefer rbx-18mode RVM alias to rbx" }
+    { :key => "rvm", :issue => "Prefer rbx-18mode RVM alias to rbx" }
   end
 
   let(:rbx20_is_no_longer_provided) do
-    { :key => :rvm, :issue => "rbx-2.0 RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
+    { :key => "rvm", :issue => "rbx-2.0 RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
   end
 
   let(:rbx200pre_is_no_longer_provided) do
-    { :key => :rvm, :issue => "rbx-2.0.0pre RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
+    { :key => "rvm", :issue => "rbx-2.0.0pre RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
   end
 
 
@@ -44,7 +44,7 @@ describe "A .travis.yml" do
   context "that has language set to Ruby" do
     context "but has no :rvm key" do
       it "is invalid" do
-        Travis::Lint::Linter.validate({ :language => "ruby" }).should include(rvm_key_is_recommended)
+        Travis::Lint::Linter.validate({ "language" => "ruby" }).should include(rvm_key_is_recommended)
         Travis::Lint::Linter.valid?(content_of_sample_file("no_rvm_key.yml")).should be_false
       end
     end
@@ -52,7 +52,7 @@ describe "A .travis.yml" do
 
     context "and uses jruby instead of jruby-18mode" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["jruby"] }
+        { "language" => "ruby", "rvm" => ["jruby"] }
       end
 
       it "is invalid" do
@@ -64,7 +64,7 @@ describe "A .travis.yml" do
 
     context "and uses rbx instead of rbx-18mode" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["rbx", "1.9.3"] }
+        { "language" => "ruby", "rvm" => ["rbx", "1.9.3"] }
       end
 
       it "is invalid" do
@@ -75,7 +75,7 @@ describe "A .travis.yml" do
 
     context "and uses rbx-2.0 instead of rbx-18mode" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["rbx-2.0", "1.9.3"] }
+        { "language" => "ruby", "rvm" => ["rbx-2.0", "1.9.3"] }
       end
 
       it "is invalid" do
@@ -87,7 +87,7 @@ describe "A .travis.yml" do
 
     context "and uses rbx-2.0.0pre instead of rbx-18mode" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["rbx-2.0.0pre", "1.9.3"] }
+        { "language" => "ruby", "rvm" => ["rbx-2.0.0pre", "1.9.3"] }
       end
 
       it "is invalid" do
@@ -98,11 +98,11 @@ describe "A .travis.yml" do
 
     context "that specifies Ruby as the language but tries to set node_js version" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["1.9.3"], :node_js => ["0.6"] }
+        { "language" => "ruby", "rvm" => ["1.9.3"], "node_js" => ["0.6"] }
       end
 
       it "is invalid" do
-        Travis::Lint::Linter.validate(travis_yml).should include({ :key => :language, :issue => "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." })
+        Travis::Lint::Linter.validate(travis_yml).should include({ :key => "language", :issue => "Language is set to Ruby but \"node_js\" key is present. Ruby builder will ignore node_js key." })
       end
     end
   end
