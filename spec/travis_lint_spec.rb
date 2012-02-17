@@ -105,6 +105,56 @@ describe "A .travis.yml" do
     end
 
 
+    let(:docs) { "Travis CI documentation at http://bit.ly/travis-ci-environment" }
+
+
+    context "and uses an unsupported Ruby version" do
+      let(:unsupported_rubies) do
+        { :key => :rvm, :issue => "Detected unsupported Ruby versions. For an up-to-date list of supported Rubies, see #{docs}" }
+      end
+
+      let(:travis_yml) do
+        { :language => "ruby", :rvm => ["neoruby", "goruby", "bonanzaruby"] }
+      end
+
+      it "is invalid" do
+        Travis::Lint::Linter.validate(travis_yml).should include(unsupported_rubies)
+        Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_rubies.yml")).should be_false
+      end
+    end
+
+
+    context "and uses an unsupported Node.js version" do
+      let(:unsupported_nodejs) do
+        { :key => :node_js, :issue => "Detected unsupported Node.js versions. For an up-to-date list of supported Node.js versions, see #{docs}" }
+      end
+
+      let(:travis_yml) do
+        { :language => "node_js", :node_js => ["100.0", "0.5"] }
+      end
+
+      it "is invalid" do
+        Travis::Lint::Linter.validate(travis_yml).should include(unsupported_nodejs)
+        Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_nodejs.yml")).should be_false
+      end
+    end
+
+    context "and uses an unsupported PHP version" do
+      let(:unsupported_php) do
+        { :key => :php, :issue => "Detected unsupported PHP versions. For an up-to-date list of supported PHP versions, see #{docs}" }
+      end
+
+      let(:travis_yml) do
+        { :language => "php", :php => ["100.0", "0.5"] }
+      end
+
+      it "is invalid" do
+        Travis::Lint::Linter.validate(travis_yml).should include(unsupported_php)
+        Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_php.yml")).should be_false
+      end
+    end
+
+
     context "that specifies Ruby as the language but tries to set node_js version" do
       let(:travis_yml) do
         { :language => "ruby", :rvm => ["1.9.3"], :node_js => ["0.6"] }
