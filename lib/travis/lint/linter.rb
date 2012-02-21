@@ -20,7 +20,7 @@ module Travis
       def self.validate(hsh)
         hsh = Hashr.new hsh
 
-        issues = find_validators_for(hsh[:language]).inject([]) do |acc, val|
+        find_validators_for(hsh[:language]).inject([]) do |acc, val|
           acc << val.call(hsh)
           acc
         end.reject(&:first).map { |pair| pair[1] }
