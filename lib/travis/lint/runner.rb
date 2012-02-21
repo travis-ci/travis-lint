@@ -47,7 +47,7 @@ module Travis
       def check_that_travis_yml_file_is_valid_yaml!
         begin
           YAML.load_file(@travis_file_path)
-        rescue ArgumentError, Psych::SyntaxError => e
+        rescue ArgumentError, Psych::SyntaxError
           quit ".travis.yml at #{@travis_file_path} is not a valid YAML file and thus will be ignored by Travis CI."
         end
       end
