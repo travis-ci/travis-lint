@@ -1,4 +1,12 @@
 require "spec_helper"
+require "stringio"
+
+def capture_stdout
+  $stdout = StringIO.new
+  yield
+ensure
+  $stdout = STDOUT
+end
 
 describe "A .travis.yml" do
   context "with issues" do
@@ -6,7 +14,9 @@ describe "A .travis.yml" do
       status = 0
 
       begin
-        Travis::Lint::Runner.new(["spec/files/no_language_key.yml"]).run()
+        capture_stdout do
+          Travis::Lint::Runner.new(["spec/files/no_language_key.yml"]).run()
+        end
       rescue SystemExit => e
         status = e.status
       end
