@@ -32,6 +32,7 @@ module Travis
             puts
             puts
           end
+          quit ".travis.yml at #{@travis_file_path} has issues and thus will be ignored by Travis CI."
         end
       end
 
