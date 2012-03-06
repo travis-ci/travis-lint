@@ -29,6 +29,9 @@ describe "A .travis.yml" do
     { :key => :otp_release, :issue => "Specify OTP releases you want to test against using the \"otp_release\" key" }
   end
 
+  let(:docs) { "Travis CI documentation at http://bit.ly/travis-ci-environment" }
+
+
 
   def content_of_sample_file(name)
     path = Pathname.new(File.join("spec", "files", name)).expand_path
@@ -105,8 +108,6 @@ describe "A .travis.yml" do
     end
 
 
-    let(:docs) { "Travis CI documentation at http://bit.ly/travis-ci-environment" }
-
 
     context "and uses an unsupported Ruby version" do
       let(:unsupported_rubies) do
@@ -124,6 +125,20 @@ describe "A .travis.yml" do
     end
 
 
+    context "that specifies Ruby as the language but tries to set node_js version" do
+      let(:travis_yml) do
+        { :language => "ruby", :rvm => ["1.9.3"], :node_js => ["0.6"] }
+      end
+
+      it "is invalid" do
+        Travis::Lint::Linter.validate(travis_yml).should include({ :key => :language, :issue => "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." })
+      end
+    end
+  end
+
+
+
+  context "that has language set to node_js" do
     context "and uses an unsupported Node.js version" do
       let(:unsupported_nodejs) do
         { :key => :node_js, :issue => "Detected unsupported Node.js versions. For an up-to-date list of supported Node.js versions, see #{docs}" }
@@ -138,7 +153,10 @@ describe "A .travis.yml" do
         Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_nodejs.yml")).should be_false
       end
     end
+  end
 
+
+  context "that has language set to PHP" do
     context "and uses an unsupported PHP version" do
       let(:unsupported_php) do
         { :key => :php, :issue => "Detected unsupported PHP versions. For an up-to-date list of supported PHP versions, see #{docs}" }
@@ -153,18 +171,49 @@ describe "A .travis.yml" do
         Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_php.yml")).should be_false
       end
     end
+  end
 
 
-    context "that specifies Ruby as the language but tries to set node_js version" do
+
+  context "that has language set to Python" do
+    context "and uses an unsupported Python version" do
+      let(:unsupported_python) do
+        { :key => :python, :issue => "Detected unsupported Python versions. For an up-to-date list of supported Python versions, see #{docs}" }
+      end
+
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["1.9.3"], :node_js => ["0.6"] }
+        { :language => "python", :python => ["stackless-py", "2.4", "2.3"] }
       end
 
       it "is invalid" do
-        Travis::Lint::Linter.validate(travis_yml).should include({ :key => :language, :issue => "Language is set to Ruby but node_js key is present. Ruby builder will ignore node_js key." })
+        Travis::Lint::Linter.validate(travis_yml).should include(unsupported_python)
+        Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_python.yml")).should be_false
       end
     end
   end
+
+
+
+  context "that has language set to Perl" do
+    context "and uses an unsupported Perl version" do
+      let(:unsupported_perl) do
+        { :key => :perl, :issue => "Detected unsupported Perl versions. For an up-to-date list of supported Perl versions, see #{docs}" }
+      end
+
+      let(:travis_yml) do
+        { :language => "perl", :perl => ["5.6", "5.8"] }
+      end
+
+      it "is invalid" do
+        Travis::Lint::Linter.validate(travis_yml).should include(unsupported_perl)
+        Travis::Lint::Linter.valid?(content_of_sample_file("uses_unsupported_perl.yml")).should be_false
+      end
+    end
+  end
+
+
+
+
 
   context "that has language set to erlang" do
     context "but has no \"otp_release\" key" do

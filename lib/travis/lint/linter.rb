@@ -96,6 +96,9 @@ module Travis
       KNOWN_NODE_VERSIONS = %w(0.4 0.6 0.7)
       KNOWN_PHP_VERSIONS  = %w(5.2 5.3 5.3.2 5.3.8 5.4)
 
+      KNOWN_PYTHON_VERSIONS  = %w(2.5 2.6 2.7 3.1 3.2)
+      KNOWN_PERL_VERSIONS    = %w(5.10 5.12 5.14)
+
 
       #
       # PHP
@@ -103,6 +106,22 @@ module Travis
 
       validator_for :php, :php, "Detected unsupported PHP versions. For an up-to-date list of supported PHP versions, see #{DOCS_URL}" do |hsh|
         ("php" == hsh[:language].to_s.downcase) && hsh[:php].is_a?(Array) && !known_php_versions?(hsh[:php])
+      end
+
+      #
+      # Python
+      #
+
+      validator_for :python, :python, "Detected unsupported Python versions. For an up-to-date list of supported Python versions, see #{DOCS_URL}" do |hsh|
+        ("python" == hsh[:language].to_s.downcase) && hsh[:python].is_a?(Array) && !known_python_versions?(hsh[:python])
+      end
+
+      #
+      # Perl
+      #
+
+      validator_for :perl, :perl, "Detected unsupported Perl versions. For an up-to-date list of supported Perl versions, see #{DOCS_URL}" do |hsh|
+        ("perl" == hsh[:language].to_s.downcase) && hsh[:perl].is_a?(Array) && !known_perl_versions?(hsh[:perl])
       end
 
 
@@ -136,6 +155,20 @@ module Travis
         ary = ary.map(&:to_s)
 
         unknown = ary - KNOWN_PHP_VERSIONS
+        unknown.empty?
+      end
+
+      def self.known_python_versions?(ary)
+        ary = ary.map(&:to_s)
+
+        unknown = ary - KNOWN_PYTHON_VERSIONS
+        unknown.empty?
+      end
+
+      def self.known_perl_versions?(ary)
+        ary = ary.map(&:to_s)
+
+        unknown = ary - KNOWN_PERL_VERSIONS
         unknown.empty?
       end
 
