@@ -1,6 +1,6 @@
 module Travis
   module Lint
-    VERSION = "1.4.0"
+    VERSION = "1.5.0.pre1"
     Version = VERSION
   end
 end
