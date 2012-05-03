@@ -40,10 +40,10 @@ describe "A .travis.yml" do
   end
 
   context "that is blank" do
-    it "is invalid" do
-      Travis::Lint::Linter.validate({}).should include(language_key_is_mandatory)
+    it "is valid" do
+      Travis::Lint::Linter.validate({}).should_not include(language_key_is_mandatory)
 
-      Travis::Lint::Linter.valid?(content_of_sample_file("no_language_key.yml")).should be_false
+      Travis::Lint::Linter.valid?(content_of_sample_file("no_language_key.yml")).should be_true
     end
   end
 

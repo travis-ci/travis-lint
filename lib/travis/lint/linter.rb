@@ -30,16 +30,6 @@ module Travis
         validate(hsh).empty?
       end
 
-
-      #
-      # General
-      #
-
-      validator_for :all, :language, "The \"language\" key is mandatory" do |hsh|
-        blank? hsh[:language]
-      end
-
-
       #
       # Erlang
       #

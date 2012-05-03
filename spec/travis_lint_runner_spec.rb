@@ -15,7 +15,7 @@ describe "A .travis.yml" do
 
       begin
         capture_stdout do
-          Travis::Lint::Runner.new(["spec/files/no_language_key.yml"]).run()
+          Travis::Lint::Runner.new(["spec/files/uses_unsupported_perl.yml"]).run()
         end
       rescue SystemExit => e
         status = e.status
