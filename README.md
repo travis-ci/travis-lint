@@ -1,6 +1,7 @@
 # What is travis-lint
 
-`travis-lint` is a tool that checks your `.travis.yml` file for possible issues, deprecations and so on.
+`travis-lint` is a tool that checks your `.travis.yml` file for possible issues, deprecations and so on.  
+Supporting the gem, there's also an online version of this tool at [lint.travis-ci.org](http://lint.travis-ci.org).
 
 [![Continuous Integration status](https://secure.travis-ci.org/travis-ci/travis-lint.png)](http://travis-ci.org/travis-ci/travis-lint)
 
