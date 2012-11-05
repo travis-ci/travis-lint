@@ -31,8 +31,6 @@ describe "A .travis.yml" do
 
   let(:docs) { "Travis CI documentation at http://bit.ly/travis-ci-environment" }
 
-
-
   def content_of_sample_file(name)
     path = Pathname.new(File.join("spec", "files", name)).expand_path
 
@@ -61,7 +59,6 @@ describe "A .travis.yml" do
       end
     end
 
-
     context "and uses jruby instead of jruby-18mode" do
       let(:travis_yml) do
         { :language => "ruby", :rvm => ["jruby"] }
@@ -73,7 +70,6 @@ describe "A .travis.yml" do
       end
     end
 
-
     context "and uses rbx instead of rbx-18mode" do
       let(:travis_yml) do
         { :language => "ruby", :rvm => ["rbx", "1.9.3"] }
@@ -83,7 +79,6 @@ describe "A .travis.yml" do
         Travis::Lint::Linter.validate(travis_yml).should include(prefer_rbx18mode_over_rbx)
       end
     end
-
 
     context "and uses rbx-2.0 instead of rbx-18mode" do
       let(:travis_yml) do
@@ -96,7 +91,6 @@ describe "A .travis.yml" do
       end
     end
 
-
     context "and uses rbx-2.0.0pre instead of rbx-18mode" do
       let(:travis_yml) do
         { :language => "ruby", :rvm => ["rbx-2.0.0pre", "1.9.3"] }
@@ -106,8 +100,6 @@ describe "A .travis.yml" do
         Travis::Lint::Linter.validate(travis_yml).should include(rbx200pre_is_no_longer_provided)
       end
     end
-
-
 
     context "and uses an unsupported Ruby version" do
       let(:unsupported_rubies) do
@@ -124,7 +116,6 @@ describe "A .travis.yml" do
       end
     end
 
-
     context "that specifies Ruby as the language but tries to set node_js version" do
       let(:travis_yml) do
         { :language => "ruby", :rvm => ["1.9.3"], :node_js => ["0.6"] }
@@ -135,8 +126,6 @@ describe "A .travis.yml" do
       end
     end
   end
-
-
 
   context "that has language set to node_js" do
     context "and uses an unsupported Node.js version" do
@@ -155,7 +144,6 @@ describe "A .travis.yml" do
     end
   end
 
-
   context "that has language set to PHP" do
     context "and uses an unsupported PHP version" do
       let(:unsupported_php) do
@@ -172,8 +160,6 @@ describe "A .travis.yml" do
       end
     end
   end
-
-
 
   context "that has language set to Python" do
     context "and uses an unsupported Python version" do
@@ -192,8 +178,6 @@ describe "A .travis.yml" do
     end
   end
 
-
-
   context "that has language set to Perl" do
     context "and uses an unsupported Perl version" do
       let(:unsupported_perl) do
@@ -211,15 +195,35 @@ describe "A .travis.yml" do
     end
   end
 
-
-
-
-
   context "that has language set to erlang" do
     context "but has no \"otp_release\" key" do
       it "is invalid" do
         Travis::Lint::Linter.validate({ :language => "erlang" }).should include(otp_release_key_is_required)
         Travis::Lint::Linter.valid?({ :language => "erlang" }).should be_false
+      end
+    end
+  end
+
+  context "with a build matrix" do
+    let(:build_matrix_is_not_list_of_hashes) {
+      {:key => :matrix, :issue => "Allowed matrix failures must contain a list of hashes."}
+    }
+    context "with allow_failures" do
+      let(:invalid_matrix) {
+        {:matrix => {:allow_failures => ["ruby-head"]}}
+      }
+
+      let(:valid_matrix) {
+        {:matrix => {:allow_failures => [{"rvm" => "ruby-head"}]}}
+      }
+
+      it "is invalid when the allowed failures are not a list of hashes" do
+        Travis::Lint::Linter.validate(invalid_matrix).should include(build_matrix_is_not_list_of_hashes)
+        Travis::Lint::Linter.valid?(invalid_matrix).should == false
+      end
+
+      it "is valid when allowed failures are a list of hashes" do
+        Travis::Lint::Linter.valid?(valid_matrix).should == true
       end
     end
   end

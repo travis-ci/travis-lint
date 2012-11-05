@@ -123,7 +123,11 @@ module Travis
         ("node_js" == hsh[:language].to_s.downcase) && hsh[:node_js].is_a?(Array) && !known_node_js_versions?(hsh[:node_js])
       end
 
-
+      validator_for :all, :matrix, "Allowed matrix failures must contain a list of hashes." do |hash|
+        if hash[:matrix] and hash[:matrix][:allow_failures]
+          !hash[:matrix][:allow_failures].any?{|failure| failure.is_a?(Hash)}
+        end
+      end
 
       protected
 
