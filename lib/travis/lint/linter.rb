@@ -87,7 +87,7 @@ module Travis
       KNOWN_PHP_VERSIONS  = %w(5.2 5.3 5.3.2 5.3.8 5.4)
 
       KNOWN_PYTHON_VERSIONS  = %w(2.5 2.6 2.7 3.2)
-      KNOWN_PERL_VERSIONS    = %w(5.10 5.12 5.14)
+      KNOWN_PERL_VERSIONS    = %w(5.10 5.12 5.14 5.16)
 
 
       #
