@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency("hashr", [">= 0.0.19"])
 
-  s.add_development_dependency("rspec", ["~> 2.8.0"])
+  s.add_development_dependency("rspec", "~> 2.8")
 end
