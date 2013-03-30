@@ -83,7 +83,7 @@ module Travis
 
 
       KNOWN_RUBY_VERSIONS = %w(1.8.7 ruby-1.8.7 1.9.2 ruby-1.9.2 1.9.3 ruby-1.9.3 2.0.0 ruby-2.0.0 ruby-head jruby jruby-18mode jruby-19mode rbx rbx-18mode rbx-19mode jruby-head ree ree-1.8.7)
-      KNOWN_NODE_VERSIONS = %w(0.6 0.8 0.9)
+      KNOWN_NODE_VERSIONS = %w(0.6 0.8 0.9 0.10)
       KNOWN_PHP_VERSIONS  = %w(5.2 5.3 5.3.3 5.4 5.5)
 
       KNOWN_PYTHON_VERSIONS  = %w(2.5 2.6 2.7 3.2 3.3 pypy)
