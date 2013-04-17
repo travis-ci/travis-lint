@@ -34,7 +34,7 @@ describe "A .travis.yml" do
   def content_of_sample_file(name)
     path = Pathname.new(File.join("spec", "files", name)).expand_path
 
-    YAML.load_file(path.to_s)
+    YAML.load_file path.to_s, :safe => true
   end
 
   context "that is blank" do
