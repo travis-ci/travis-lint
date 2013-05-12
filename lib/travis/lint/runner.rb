@@ -45,6 +45,7 @@ module Travis
           end
         end
         exit(1) if errors
+        exit(0)
       end
 
       protected
