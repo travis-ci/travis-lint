@@ -1,11 +1,13 @@
 require "spec_helper"
 require "stringio"
 
-def capture_stdout
+def capture_stdouterr
   $stdout = StringIO.new
+  $stderr = StringIO.new
   yield
 ensure
   $stdout = STDOUT
+  $stderr = STDERR
 end
 
 class ExploitableClassBuilder
@@ -24,7 +26,7 @@ describe "A .travis.yml" do
       status = 0
 
       begin
-        capture_stdout do
+        capture_stdouterr do
           Travis::Lint::Runner.new(["spec/files/uses_unsupported_perl.yml"]).run
         end
       rescue SystemExit => e
@@ -38,7 +40,7 @@ describe "A .travis.yml" do
   context "with an exploit" do
     it "loads safely" do
       expect {
-        capture_stdout {
+        capture_stdouterr {
           Travis::Lint::Runner.new(["spec/files/contains_exploit.yml"]).run
         }
       }.to_not raise_exception(RuntimeError, "I'm in yr system!")

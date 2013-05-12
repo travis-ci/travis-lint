@@ -16,6 +16,8 @@ module Travis
           end
         end
 
+        @quiet = !!ENV['QUIET']
+
         @travis_yml_file_paths = []
         argv.each do |arg|
           @travis_yml_file_paths << Pathname.new(arg).expand_path
@@ -30,15 +32,17 @@ module Travis
           check_that_travis_yml_file_is_valid_yaml!(travis_yml_file_path)
 
           if (issues = Linter.validate(self.parsed_travis_yml(travis_yml_file_path))).empty?
-            puts "Hooray, #{travis_yml_file_path} seems to be solid!"
+            unless @quiet
+              puts "Hooray, #{travis_yml_file_path} seems to be solid!\n"
+            end
           else
             errors = true
-            puts "#{travis_yml_file_path} has issues:"
+            $stderr.puts "#{travis_yml_file_path} has issues:"
             issues.each do |issue|
-              puts "  Found an issue with the `#{issue[:key]}:` key:\n    #{issue[:issue]}"
+              $stderr.puts "  Found an issue with the `#{issue[:key]}:` key:\n    #{issue[:issue]}"
             end
+            $stderr.puts
           end
-          puts
         end
         exit(1) if errors
       end
@@ -74,9 +78,7 @@ Usage:
       end
 
       def quit(message, status = 1)
-        puts message
-        puts
-
+        $stderr.puts message
         exit(status)
       end
     end
