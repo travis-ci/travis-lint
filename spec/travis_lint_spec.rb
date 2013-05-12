@@ -205,6 +205,19 @@ describe "A .travis.yml" do
   end
 
   context "with a build matrix" do
+    let(:invalid_array_matrix) {
+      {:matrix => ['foo', 'bar', 'baz']}
+    }
+
+    let(:build_matrix_is_not_hash) {
+      {:key => :matrix, :issue => "Matrix must be a hash."}
+    }
+
+    it "is invalid unless the build matrix is a hash" do
+      Travis::Lint::Linter.valid?(invalid_array_matrix).should eq(false)
+      Travis::Lint::Linter.validate(invalid_array_matrix).should include(build_matrix_is_not_hash)
+    end
+
     let(:build_matrix_is_not_list_of_hashes) {
       {:key => :matrix, :issue => "Allowed matrix failures must contain a list of hashes."}
     }
