@@ -129,6 +129,12 @@ module Travis
         end
       end
 
+      validator_for :all, :matrix, "Matrix includes must be a list of hashes." do |hash|
+        if hash[:matrix] && hash[:matrix].is_a?(Hash) && hash[:matrix][:include]
+          !hash[:matrix][:include].any?{|failure| failure.is_a?(Hash)}
+        end
+      end
+
       validator_for :all, :matrix, "Matrix must be a hash." do |hash|
         !(hash[:matrix].nil? || hash[:matrix].is_a?(Hash))
       end

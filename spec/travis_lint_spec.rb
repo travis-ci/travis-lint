@@ -239,5 +239,31 @@ describe "A .travis.yml" do
         Travis::Lint::Linter.valid?(valid_matrix).should == true
       end
     end
+    context "with include" do
+      let(:include_is_a_hash) {
+        {:matrix => {:include => {"jdk"=> 'openjdk6', 'script' => 'mvn dostuff'}}}
+      }
+
+      let(:include_is_an_array_of_arrays) {
+        {:matrix => {:include => [[{"jdk"=> 'openjdk6', 'script' => 'mvn dostuff'}]]}}
+      }
+
+      let(:valid_matrix) {
+        {:matrix => {:include => [{"jdk"=> 'openjdk6', 'script' => 'mvn dostuff'}]}}
+      }
+
+      let(:include_is_not_list_of_hashes) {
+        {:key => :matrix, :issue => "Matrix includes must be a list of hashes."}
+      }
+      it "is invalid when the include is not a list of hashes" do
+        Travis::Lint::Linter.validate(include_is_a_hash).should include(include_is_not_list_of_hashes)
+        Travis::Lint::Linter.valid?(include_is_a_hash).should == false
+        Travis::Lint::Linter.validate(include_is_an_array_of_arrays).should include(include_is_not_list_of_hashes)
+        Travis::Lint::Linter.valid?(include_is_an_array_of_arrays).should == false
+      end
+      it "is valid when allowed include is a list of hashes" do
+        Travis::Lint::Linter.valid?(valid_matrix).should == true
+      end
+    end
   end
 end
