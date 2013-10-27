@@ -1,8 +1,0 @@
-#~
-*.gem
-*.swp
-*~
-.DS_Store
-/.rvmrc
-/Gemfile.lock
-/TAGS
