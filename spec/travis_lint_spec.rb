@@ -185,7 +185,7 @@ describe "A .travis.yml" do
       end
 
       let(:travis_yml) do
-        { :language => "perl", :perl => ["5.6", "5.8"] }
+        { :language => "perl", :perl => ["5.6"] }
       end
 
       it "is invalid" do
