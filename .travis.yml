@@ -11,7 +11,7 @@ rvm:
   - ruby-head
   - 1.8.7
 matrix:
-  allow_failure:
+  allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
 script: bundle exec rspec -c spec
