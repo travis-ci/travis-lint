@@ -10,6 +10,10 @@ rvm:
   - jruby-head
   - ruby-head
   - 1.8.7
+matrix:
+  allow_failure:
+    - rvm: jruby-head
+    - rvm: ruby-head
 script: bundle exec rspec -c spec
 notifications:
   irc: "irc.freenode.org#travis"
