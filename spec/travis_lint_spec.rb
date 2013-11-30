@@ -13,16 +13,16 @@ describe "A .travis.yml" do
     { :key => :rvm, :issue => "Prefer jruby-18mode RVM alias to jruby" }
   end
 
-  let(:prefer_rbx18mode_over_rbx) do
-    { :key => :rvm, :issue => "Prefer rbx-18mode RVM alias to rbx" }
+  let(:rbx18mode_is_no_longer_provided) do
+    { :key => :rvm, :issue => "rbx-18mode RVM alias is no longer provide. Please use one of rbx, rbx-X, rbx-X.Y, or rbx-X.Y.Z depending on your desired version" }
   end
 
-  let(:rbx20_is_no_longer_provided) do
-    { :key => :rvm, :issue => "rbx-2.0 RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
+  let(:rbx19mode_is_no_longer_provided) do
+    { :key => :rvm, :issue => "rbx-19mode RVM alias is no longer provide. Please use one of rbx, rbx-X, rbx-X.Y, or rbx-X.Y.Z depending on your desired version" }
   end
 
   let(:rbx200pre_is_no_longer_provided) do
-    { :key => :rvm, :issue => "rbx-2.0.0pre RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." }
+    { :key => :rvm, :issue => "rbx-2.0.0pre RVM alias is no longer provided. Please use one of rbx, rbx-X, rbx-X.Y, or rbx-X.Y.Z depending on your desired version" }
   end
 
   let(:otp_release_key_is_required) do
@@ -70,34 +70,34 @@ describe "A .travis.yml" do
       end
     end
 
-    context "and uses rbx instead of rbx-18mode" do
+    context "and uses rbx-18mode" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["rbx", "1.9.3"] }
+        { :language => "ruby", :rvm => ["rbx-18mode", "1.9.3"] }
       end
 
       it "is invalid" do
-        Travis::Lint::Linter.validate(travis_yml).should include(prefer_rbx18mode_over_rbx)
+        Travis::Lint::Linter.validate(travis_yml).should include(rbx18mode_is_no_longer_provided)
       end
     end
 
-    context "and uses rbx-2.0 instead of rbx-18mode" do
+    context "and uses rbx-19mode" do
       let(:travis_yml) do
-        { :language => "ruby", :rvm => ["rbx-2.0", "1.9.3"] }
+        { :language => "ruby", :rvm => ["rbx-19mode", "1.9.3"] }
       end
 
       it "is invalid" do
-        Travis::Lint::Linter.validate(travis_yml).should include(rbx20_is_no_longer_provided)
-        Travis::Lint::Linter.valid?(content_of_sample_file("uses_old_rbx_aliases.yml")).should be_false
+        Travis::Lint::Linter.validate(travis_yml).should include(rbx19mode_is_no_longer_provided)
       end
     end
 
-    context "and uses rbx-2.0.0pre instead of rbx-18mode" do
+    context "and uses rbx-2.0.0pre" do
       let(:travis_yml) do
         { :language => "ruby", :rvm => ["rbx-2.0.0pre", "1.9.3"] }
       end
 
       it "is invalid" do
         Travis::Lint::Linter.validate(travis_yml).should include(rbx200pre_is_no_longer_provided)
+        Travis::Lint::Linter.valid?(content_of_sample_file("uses_old_rbx_aliases.yml")).should be_false
       end
     end
 
