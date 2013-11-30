@@ -94,7 +94,7 @@ describe "A .travis.yml" do
         capture {
           Travis::Lint::Runner.new(["spec/files/contains_exploit.yml"]).run
         }
-      }.to_not raise_exception(RuntimeError, "I'm in yr system!")
+      }.to_not raise_error
     end
   end
 end
