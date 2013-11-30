@@ -1,4 +1,4 @@
 language: ruby
 rvm:
   - jruby
-  - rbx-2.0.0pre
+  - rbx-2.0.0

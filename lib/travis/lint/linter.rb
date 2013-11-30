@@ -51,15 +51,15 @@ module Travis
         hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("jruby")
       end
 
-      validator_for :ruby, :rvm, "Prefer rbx-18mode RVM alias to rbx" do |hsh|
-        hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("rbx")
+      validator_for :ruby, :rvm, "rbx-18mode RVM alias is no longer provide. Please use one of rbx, rbx-X, rbx-X.Y, or rbx-X.Y.Z depending on your desired version" do |hsh|
+        hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("rbx-18mode")
       end
 
-      validator_for :ruby, :rvm, "rbx-2.0 RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." do |hsh|
-        hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("rbx-2.0")
+      validator_for :ruby, :rvm, "rbx-19mode RVM alias is no longer provide. Please use one of rbx, rbx-X, rbx-X.Y, or rbx-X.Y.Z depending on your desired version" do |hsh|
+        hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("rbx-19mode")
       end
 
-      validator_for :ruby, :rvm, "rbx-2.0.0pre RVM alias is no longer provided. Please use rbx-18mode or rbx-19mode instead." do |hsh|
+      validator_for :ruby, :rvm, "rbx-2.0.0pre RVM alias is no longer provided. Please use one of rbx, rbx-X, rbx-X.Y, or rbx-X.Y.Z depending on your desired version" do |hsh|
         hsh[:rvm].is_a?(Array) && hsh[:rvm].include?("rbx-2.0.0pre")
       end
 
