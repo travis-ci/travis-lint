@@ -13,6 +13,8 @@ matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
+before_install:
+  - gem install bundler -v '1.5.1'
 script: bundle exec rspec -c spec
 notifications:
   irc: "irc.freenode.org#travis"
