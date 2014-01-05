@@ -14,8 +14,7 @@ matrix:
     - rvm: jruby-head
     - rvm: ruby-head
 before_install:
-  - gem install bundler -v '1.5.1'
-  - gem update --system 2.1.11
+  - 'ruby -e ''puts RUBY_VERSION'' | grep ^1\.8 && gem update --system 2.1.11 || true'
 script: bundle exec rspec -c spec
 notifications:
   irc: "irc.freenode.org#travis"
