@@ -33,6 +33,6 @@ Once you are done with your changes, push a branch and submit a pull request.
 
 ## License & Copyright
 
-Copyright 2012 (c) Travis CI Development Team.
+Copyright 2014 (c) Travis CI Development Team.
 
 Released under the MIT license.
