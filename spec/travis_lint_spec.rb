@@ -45,6 +45,12 @@ describe "A .travis.yml" do
     end
   end
 
+  context "with invalid language" do
+    it "is invalid" do
+      Travis::Lint::Linter.valid?(content_of_sample_file("invalid_language_key.yml")).should be_false
+    end
+  end
+
   context "using String keys" do
     it "is validates as with Symbol keys" do
       Travis::Lint::Linter.validate({ "language" => "ruby" }).should include(rvm_key_is_recommended)

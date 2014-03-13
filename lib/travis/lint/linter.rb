@@ -139,6 +139,10 @@ module Travis
         !(hash[:matrix].nil? || hash[:matrix].is_a?(Hash))
       end
 
+      validator_for :all, :language, "Language must be valid" do |hash|
+        hash.has_key?(:language) && validators_for_language(hash[:language]).empty?
+      end
+
       protected
 
       def self.known_ruby_versions?(ary)
