@@ -86,7 +86,7 @@ module Travis
       KNOWN_NODE_VERSIONS = %w(0.6 0.8 0.9 0.10 0.11)
       KNOWN_PHP_VERSIONS  = %w(5.2 5.3 5.3.3 5.4 5.5 5.6 hhvm)
 
-      KNOWN_PYTHON_VERSIONS  = %w(2.6 2.7 3.2 3.3 pypy)
+      KNOWN_PYTHON_VERSIONS  = %w(2.6 2.7 3.2 3.3 3.4 pypy)
       KNOWN_PERL_VERSIONS    = %w(5.8 5.10 5.12 5.14 5.16 5.18 5.19)
 
 
