@@ -3,7 +3,8 @@
 `travis-lint` is a tool that checks your `.travis.yml` file for possible issues, deprecations and so on.  
 Supporting the gem, there's also an online version of this tool at [lint.travis-ci.org](http://lint.travis-ci.org).
 
-`travis-lint` has been superseded by [`travis-yaml`](https://github.com/travis-ci/travis-yaml)
+The library functions of `travis-lint` has been superseded by [`travis-yaml`](https://github.com/travis-ci/travis-yaml).
+The command line utility `travis-lint` is now available as [`travis lint`](https://github.com/travis-ci/travis.rb#lint).
 
 ## License & Copyright
 
