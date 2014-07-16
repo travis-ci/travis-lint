@@ -1,24 +1,3 @@
 language: ruby
-rvm:
-  - 1.9.2
-  - 1.9.3
-  - 2.0.0
-  - jruby-18mode
-  - jruby-19mode
-  - rbx
-  - jruby-head
-  - ruby-head
-  - 1.8.7
-matrix:
-  allow_failures:
-    - rvm: jruby-head
-    - rvm: ruby-head
-before_install:
-  - 'ruby -e ''puts RUBY_VERSION'' | grep ^1\.8 && gem update --system 2.1.11 || true'
-script: bundle exec rspec -c spec
-notifications:
-  irc: "irc.freenode.org#travis"
-  email:
-    recepients:
-      - michaelklishin@me.com
-
+rvm: [2.0.0, 1.8.7]
+script: bundle exec ./bin/travis-lint
