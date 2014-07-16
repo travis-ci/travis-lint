@@ -6,10 +6,12 @@ Timeout.timeout(5) do
   require 'net/https'
   require 'yaml'
 
-  path     = ARGV[0] || '.travis.yml'
-  content  = path == '-' ? $stdin.read : File.read(path)
-  uri      = URI.parse("https://api.travis-ci.org/lint")
-  response = Net::HTTP.post_form(uri, :content => content)
+  path         = ARGV[0] || '.travis.yml'
+  http         = Net::HTTP.new('api.travis-ci.org', 443)
+  http.use_ssl = true
+  request      = Net::HTTP::Post.new('/lint')
+  request.body = path == '-' ? $stdin.read : File.read(path)
+  response     = http.request(request)
 
   response.value
   warnings = YAML.load(response.body)['lint']['warnings']
