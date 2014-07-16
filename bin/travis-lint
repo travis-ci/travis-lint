@@ -1,21 +1,22 @@
 #!/usr/bin/env ruby --disable=gems --disable=rubyopt
-require 'uri'
-require 'net/https'
-require 'yaml'
 require 'timeout'
 
-path     = ARGV[0] || '.travis.yml'
-content  = path == '-' ? $stdin.read : File.read(path)
-response = Timeout.timeout(5) do
-  uri    = URI.parse("https://api.travis-ci.org/lint")
-  Net::HTTP.post_form(uri, :content => content)
-end
+Timeout.timeout(5) do
+  require 'uri'
+  require 'net/https'
+  require 'yaml'
 
-response.value
-warnings = YAML.load(response.body)['lint']['warnings']
-warnings.reverse.each do |warning|
-  prefix = " " << warning['key'].join('.') << ":" if warning['key'].any?
-  puts "-#{prefix} #{warning['message']}"
-end
+  path     = ARGV[0] || '.travis.yml'
+  content  = path == '-' ? $stdin.read : File.read(path)
+  uri      = URI.parse("https://api.travis-ci.org/lint")
+  response = Net::HTTP.post_form(uri, :content => content)
 
-exit 1 if warnings.any?
+  response.value
+  warnings = YAML.load(response.body)['lint']['warnings']
+  warnings.reverse.each do |warning|
+    prefix = " " << warning['key'].join('.') << ":" if warning['key'].any?
+    puts "-#{prefix} #{warning['message']}"
+  end
+
+  exit 1 if warnings.any?
+end
