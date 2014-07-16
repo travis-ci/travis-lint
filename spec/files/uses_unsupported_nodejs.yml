@@ -1,5 +1,0 @@
-language: node_js
-node_js:
-  - 0.5
-  - 110.00
-  - node-webscale

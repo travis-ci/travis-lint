@@ -1,5 +1,0 @@
-language: ruby
-rvm:
-  - 1.9.3
-node_js:
-  - 0.6
