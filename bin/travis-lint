@@ -2,10 +2,14 @@
 require 'uri'
 require 'net/https'
 require 'yaml'
+require 'timeout'
 
 path     = ARGV[0] || '.travis.yml'
 content  = path == '-' ? $stdin.read : File.read(path)
-response = Net::HTTP.post_form(URI.parse("https://api.travis-ci.org/lint"), :content => content)
+response = Timeout.timeout(5) do
+  uri    = URI.parse("https://api.travis-ci.org/lint")
+  Net::HTTP.post_form(uri, :content => content)
+end
 
 response.value
 warnings = YAML.load(response.body)['lint']['warnings']
