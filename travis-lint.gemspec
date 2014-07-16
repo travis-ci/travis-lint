@@ -7,4 +7,5 @@ Gem::Specification.new 'travis-lint', '2.0.0' do |s|
   s.files         = ['bin/travis-lint']
   s.executables   = ['travis-lint']
   s.license       = 'MIT'
+  s.add_dependency 'json'
 end

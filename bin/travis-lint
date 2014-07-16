@@ -4,7 +4,7 @@ require 'timeout'
 Timeout.timeout(5) do
   require 'uri'
   require 'net/https'
-  require 'yaml'
+  require 'json'
 
   path         = ARGV[0] || '.travis.yml'
   http         = Net::HTTP.new('api.travis-ci.org', 443)
@@ -14,7 +14,7 @@ Timeout.timeout(5) do
   response     = http.request(request)
 
   response.value
-  warnings = YAML.load(response.body)['lint']['warnings']
+  warnings = JSON.load(response.body)['lint']['warnings']
   warnings.reverse.each do |warning|
     prefix = " " << warning['key'].join('.') << ":" if warning['key'].any?
     puts "-#{prefix} #{warning['message']}"
