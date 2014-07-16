@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby --disable=gems --disable=rubyopt
+#!/usr/bin/env ruby
 require 'timeout'
 
 Timeout.timeout(5) do
