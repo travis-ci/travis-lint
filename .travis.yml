@@ -1,3 +1,5 @@
 language: ruby
 rvm: [2.0.0, 1.8.7]
 script: bundle exec ./bin/travis-lint
+before_install:
+  - gem install rubygems-update -v 3.4.22
